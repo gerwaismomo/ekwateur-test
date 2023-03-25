@@ -1,0 +1,443 @@
+{
+	"info": {
+		"_postman_id": "9bf43958-41ca-4d9a-8b81-95538123581d",
+		"name": "ekwateur",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "create client",
+			"item": [
+				{
+					"name": "create pro client 1",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Create private client succeed\", function () {",
+									"    pm.response.to.have.status(201);",
+									"",
+									"    var jsonData = pm.response.json();",
+									"",
+									"    pm.expect(jsonData.id).to.not.be.null;",
+									"    pm.expect(jsonData.referenceClient).to.eql(\"EKW12345670\");",
+									"    pm.expect(jsonData.clientType).to.eql(\"PRO\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"referenceClient\" : \"EKW12345670\",\n    \"siretNo\": \"12345678901234\",\n    \"companyName\": \"c\",\n    \"annualSales\": 10000000\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/client/professional",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"client",
+								"professional"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create pro client 2",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Create private client succeed\", function () {",
+									"    pm.response.to.have.status(201);",
+									"",
+									"    var jsonData = pm.response.json();",
+									"",
+									"    pm.expect(jsonData.id).to.not.be.null;",
+									"    pm.expect(jsonData.referenceClient).to.eql(\"EKW12345671\");",
+									"    pm.expect(jsonData.clientType).to.eql(\"PRO\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"referenceClient\" : \"EKW12345671\",\n    \"siretNo\": \"12345678901234\",\n    \"companyName\": \"c\",\n    \"annualSales\": 100000\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/client/professional",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"client",
+								"professional"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create private client",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Create private client succeed\", function () {",
+									"    pm.response.to.have.status(201);",
+									"",
+									"    var jsonData = pm.response.json();",
+									"",
+									"    pm.expect(jsonData.id).to.not.be.null;",
+									"    pm.expect(jsonData.clientType).to.eql(\"INDIV\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"referenceClient\" : \"EKW12345672\",\n    \"firstname\": \"firstname\",\n    \"name\": \"name\",\n    \"civility\": \"M\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/client/individual",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"client",
+								"individual"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create client with existing reference fails",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Create client with existing reference fails\", function () {",
+									"    pm.response.to.have.status(409);",
+									"",
+									"    pm.response.to.have.body(\"Client with same reference exists\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"referenceClient\" : \"EKW12345672\",\n    \"firstname\": \"firstname\",\n    \"name\": \"name\",\n    \"civility\": \"M\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/client/individual",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"client",
+								"individual"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Compute bill",
+			"item": [
+				{
+					"name": "compute pro bill for 10000000",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Compute bill for pro client with CA gte 10000000\", function () {",
+									"    pm.response.to.have.status(200);",
+									"    pm.response.to.be.ok;",
+									"",
+									"    var jsonData = pm.response.json();",
+									"",
+									"    pm.expect(jsonData.total).to.eql(1254);",
+									"    pm.expect(jsonData.client).to.not.be.null;",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"referenceClient\" : \"EKW12345670\",\n    \"year\": 2021,\n    \"month\": 12,\n    \"consumptions\": [\n        {\n            \"energyType\" : \"GAS\",\n            \"consumption\" : 1000\n        },\n        {\n            \"energyType\" : \"ELEC\",\n            \"consumption\" : 10000\n        }\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/client/dd/bill",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"client",
+								"dd",
+								"bill"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "compute pro bill for 100000",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Compute bill for pro client with CA gte 100000\", function () {",
+									"    pm.response.to.have.status(200);",
+									"    pm.response.to.be.ok;",
+									"",
+									"    var jsonData = pm.response.json();",
+									"",
+									"    pm.expect(jsonData.total).to.eql(1298);",
+									"    pm.expect(jsonData.client).to.not.be.null;",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"referenceClient\" : \"EKW12345671\",\n    \"year\": 2021,\n    \"month\": 12,\n    \"consumptions\": [\n        {\n            \"energyType\" : \"GAS\",\n            \"consumption\" : 1000\n        },\n        {\n            \"energyType\" : \"ELEC\",\n            \"consumption\" : 10000\n        }\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/client/dd/bill",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"client",
+								"dd",
+								"bill"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "compute private bill",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Compute bill for private client \", function () {",
+									"    pm.response.to.have.status(200);",
+									"    pm.response.to.be.ok;",
+									"",
+									"    var jsonData = pm.response.json();",
+									"",
+									"    pm.expect(jsonData.total).to.eql(1331);",
+									"    pm.expect(jsonData.client).to.not.be.null;",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"referenceClient\" : \"EKW12345672\",\n    \"year\": 2021,\n    \"month\": 12,\n    \"consumptions\": [\n        {\n            \"energyType\" : \"GAS\",\n            \"consumption\" : 1000\n        },\n        {\n            \"energyType\" : \"ELEC\",\n            \"consumption\" : 10000\n        }\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/client/dd/bill",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"client",
+								"dd",
+								"bill"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "compute the same bill a second time fails",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Compute the same bill more than once fails\", function () {",
+									"    pm.response.to.have.status(409);",
+									"",
+									"    pm.response.to.have.body(\"Another bill exists for same client\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"referenceClient\" : \"EKW12345672\",\n    \"year\": 2021,\n    \"month\": 12,\n    \"consumptions\": [\n        {\n            \"energyType\" : \"GAS\",\n            \"consumption\" : 1000\n        },\n        {\n            \"energyType\" : \"ELEC\",\n            \"consumption\" : 10000\n        }\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/client/dd/bill",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"client",
+								"dd",
+								"bill"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "compute bill for unknown client fails",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Compute bill for unknown client fails\", function () {",
+									"    pm.response.to.have.status(404);",
+									"",
+									"    pm.response.to.have.body(\"No client with reference exists\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"referenceClient\" : \"EKW12345673\",\n    \"year\": 2021,\n    \"month\": 12,\n    \"consumptions\": [\n        {\n            \"energyType\" : \"GAS\",\n            \"consumption\" : 1000\n        },\n        {\n            \"energyType\" : \"ELEC\",\n            \"consumption\" : 10000\n        }\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/client/dd/bill",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"client",
+								"dd",
+								"bill"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
